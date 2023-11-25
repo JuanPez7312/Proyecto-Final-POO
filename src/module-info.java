@@ -1,9 +1,4 @@
-/**
- * 
- */
-/**
- * 
- */
-module atarashi {
+
+module proyFinn {
 	requires java.desktop;
 }
