@@ -1,15 +1,15 @@
 package logica;
 
-public class Mascota {
-	private String id;
+import java.io.Serializable;
+
+public class Mascota implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	
 	private String nombre;
 	private int nivel;
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+	
+	
 	public String getNombre() {
 		return nombre;
 	}

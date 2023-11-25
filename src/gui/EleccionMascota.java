@@ -27,9 +27,12 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import logica.Mascota;
+import logica.Usuario;
+import persistencia.Consultar;
+import persistencia.Guardar;
 
 @SuppressWarnings("serial")
-public class Eleccion extends Ingreso {
+public class EleccionMascota extends JFrame {
 
 	private JPanel contentPane;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -38,11 +41,11 @@ public class Eleccion extends Ingreso {
 	/**
 	 * Create the frame.
 	 */
-	public Eleccion() {
+	public EleccionMascota(Usuario us) {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Administratum");
-		Image icono = Toolkit.getDefaultToolkit().getImage("src/multimedia/imgs/LogoAdmin.png");
+		Image icono = Toolkit.getDefaultToolkit().getImage("multimedia/imgs/LogoAdmin.png");
 		setIconImage(icono);
 		setBounds(100, 40, 1099, 695);
 		contentPane = new JPanel();
@@ -56,10 +59,7 @@ public class Eleccion extends Ingreso {
 		JLabel Eligelbl = new JLabel("ELIGE UNA CRIATURA");
 		Eligelbl.setOpaque(true);
 		Eligelbl.setBackground(new Color(207, 210, 220));
-		Border bordeElige = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK, 10), // Borde
-																												// un
-																												// color
-																												// y el
+		Border bordeElige = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK, 10), // color,
 																												// grosor
 				BorderFactory.createEmptyBorder(5, 5, 5, 5) // Luego miro como funciona esto
 		);
@@ -69,7 +69,7 @@ public class Eleccion extends Ingreso {
 		contentPane.add(Eligelbl);
 
 		try {// Esto me permite usar fuentes personalizadas que bien gracias dios
-			String kartPath = "src/multimedia/fuentes/KartDS.ttf";
+			String kartPath = "multimedia/fuentes/KartDS.ttf";
 			try (InputStream kartStream = new FileInputStream(new File(kartPath))) {
 				Font kartFont = Font.createFont(Font.TRUETYPE_FONT, kartStream);
 				Font kartFontBold = kartFont.deriveFont(Font.PLAIN, 50);
@@ -82,8 +82,13 @@ public class Eleccion extends Ingreso {
 
 		// BOTONES movimiento pestañas
 		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBackground(new Color(255, 0, 0));
+		btnVolver.setForeground(new Color(255, 255, 255));
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				Ingreso in = new Ingreso();
+				in.setVisible(true);
 			}
 		});
 		btnVolver.setBounds(19, 24, 132, 30);
@@ -91,6 +96,8 @@ public class Eleccion extends Ingreso {
 
 		// ROUNDBOTONES
 		JRadioButton rdbtnSlim = new JRadioButton("Slim");
+		rdbtnSlim.setBackground(new Color(0, 0, 0));
+		rdbtnSlim.setForeground(new Color(255, 255, 255));
 		rdbtnSlim.setActionCommand("0");
 		buttonGroup.add(rdbtnSlim);
 		rdbtnSlim.setHorizontalAlignment(SwingConstants.CENTER);
@@ -98,6 +105,8 @@ public class Eleccion extends Ingreso {
 		contentPane.add(rdbtnSlim);
 
 		JRadioButton rdbtnTooki = new JRadioButton("Tooki");
+		rdbtnTooki.setForeground(new Color(255, 255, 255));
+		rdbtnTooki.setBackground(new Color(0, 0, 0));
 		rdbtnTooki.setActionCommand("1");
 		buttonGroup.add(rdbtnTooki);
 		rdbtnTooki.setHorizontalAlignment(SwingConstants.CENTER);
@@ -105,6 +114,8 @@ public class Eleccion extends Ingreso {
 		contentPane.add(rdbtnTooki);
 
 		JRadioButton rdbtnPyaso = new JRadioButton("Payasito");
+		rdbtnPyaso.setForeground(new Color(255, 255, 255));
+		rdbtnPyaso.setBackground(new Color(0, 0, 0));
 		rdbtnPyaso.setActionCommand("2");
 		buttonGroup.add(rdbtnPyaso);
 		rdbtnPyaso.setHorizontalAlignment(SwingConstants.CENTER);
@@ -112,6 +123,8 @@ public class Eleccion extends Ingreso {
 		contentPane.add(rdbtnPyaso);
 
 		JRadioButton rdbtnTopez = new JRadioButton("Topez");
+		rdbtnTopez.setBackground(new Color(0, 0, 0));
+		rdbtnTopez.setForeground(new Color(255, 255, 255));
 		rdbtnTopez.setActionCommand("3");
 		buttonGroup.add(rdbtnTopez);
 		rdbtnTopez.setHorizontalAlignment(SwingConstants.CENTER);
@@ -119,6 +132,8 @@ public class Eleccion extends Ingreso {
 		contentPane.add(rdbtnTopez);
 
 		JRadioButton rdbtnPolpo = new JRadioButton("Polpo");
+		rdbtnPolpo.setForeground(new Color(255, 255, 255));
+		rdbtnPolpo.setBackground(new Color(0, 0, 0));
 		rdbtnPolpo.setActionCommand("4");
 		buttonGroup.add(rdbtnPolpo);
 		rdbtnPolpo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -144,13 +159,15 @@ public class Eleccion extends Ingreso {
 		contentPane.add(nombreIngreso);
 		nombreIngreso.setColumns(10);
 
-		//Boton para finalizar la eleccion
+		// Boton para finalizar la eleccion
 		JButton btnContinuar = new JButton("Continuar");
+		btnContinuar.setBackground(new Color(0, 0, 0));
+		btnContinuar.setForeground(new Color(255, 255, 255));
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Obtener el JRadioButton seleccionado del ButtonGroup
 				ButtonModel selectedModel = buttonGroup.getSelection();
-				String mascotas[] = { "Slim", "Tooki", "Payasito", "Topez", "Polpo" }; //creamos una lista para el id
+				String mascotas[] = { "Slim", "Tooki", "Payasito", "Topez", "Polpo" }; // creamos una lista para el id
 
 				// En caso de que no halla ninguna seleccion
 				if (selectedModel == null) {
@@ -158,22 +175,30 @@ public class Eleccion extends Ingreso {
 					error.setVisible(true);
 				} else {
 					error.setVisible(false);
-					Mascota mas = new Mascota(); //creamos la mascota
+					Mascota mas = new Mascota(); // creamos la mascota
 					String selectedText = selectedModel.getActionCommand();
-					us.setId("0");//TEMPORAL
-					mas.setNivel(0);//como es recien ingresado el nivel de la mascota es 0
-					mas.setId(mascotas[Integer.parseInt(selectedText)] + "-" + us.getId()); //establecemos el id como tipoMascota-idUsuario
-					if (nombreIngreso.getText().equals("")) { //si el JText del nombre esta vacio
-						error.setText("Ponle un nombre a tu " + mascotas[Integer.parseInt(selectedText)]); //mensaje de error
+					mas.setNivel(0);// como es recien ingresado el nivel de la mascota es 0
+					if (nombreIngreso.getText().equals("")) { // si el JText del nombre esta vacio
+						error.setText("Ponle un nombre a tu " + mascotas[Integer.parseInt(selectedText)]); // mensaje de
+																											// error
 						error.setVisible(true);
 					} else {
-						//establecemos nombre
+						error.setVisible(false);
+						// establecemos nombre
 						mas.setNombre(nombreIngreso.getText());
 						us.setMascota(mas);
 						
-						//aca ira la parte para continuar a la creacion de listas
+						Usuario.getUs().clear();
+						Usuario.getUs().addAll(Consultar.deserializar());
+						Usuario.getUs().add(us);
+						
+						Guardar.ser(Usuario.getUs());
+						
+						setVisible(false);
+
+						Administrador ad = new Administrador(us);
+						ad.setVisible(true);
 					}
-					
 
 				}
 
@@ -194,7 +219,7 @@ public class Eleccion extends Ingreso {
 		contentPane.add(nombrelbl);
 
 		try {// Esto me permite usar fuentes personalizadas que bien gracias dios
-			String mincraPath = "src/multimedia/fuentes/Mincra.ttf";
+			String mincraPath = "multimedia/fuentes/Mincra.ttf";
 			try (InputStream mincraStream = new FileInputStream(new File(mincraPath))) {
 
 				Font mincraFont = Font.createFont(Font.TRUETYPE_FONT, mincraStream);
@@ -219,7 +244,7 @@ public class Eleccion extends Ingreso {
 		// CRIATURAS eleccion iconos
 		JLabel Slimlbl = new JLabel("");
 		Slimlbl.setBounds(137, -21, 240, 240);
-		ImageIcon slimImg = new ImageIcon("src/multimedia/imgs/Eslaim.png");
+		ImageIcon slimImg = new ImageIcon("multimedia/imgs/Eslaim.png");
 		Image slimImgIns = slimImg.getImage();
 		Image slimNewImg = slimImgIns.getScaledInstance(Slimlbl.getWidth(), Slimlbl.getHeight(), Image.SCALE_SMOOTH);
 		ImageIcon slimFinalImage = new ImageIcon(slimNewImg);
@@ -228,7 +253,7 @@ public class Eleccion extends Ingreso {
 
 		JLabel Tookilbl = new JLabel("");
 		Tookilbl.setBounds(404, -21, 240, 240);
-		ImageIcon tookiImg = new ImageIcon("src/multimedia/imgs/Tooki.png");
+		ImageIcon tookiImg = new ImageIcon("multimedia/imgs/Tooki.png");
 		Image tookiImgIns = tookiImg.getImage();
 		Image tookiNewImg = tookiImgIns.getScaledInstance(Tookilbl.getWidth(), Tookilbl.getHeight(),
 				Image.SCALE_SMOOTH);
@@ -238,7 +263,7 @@ public class Eleccion extends Ingreso {
 
 		JLabel Payasolbl = new JLabel("");
 		Payasolbl.setBounds(723, -21, 240, 240);
-		ImageIcon pyasoImg = new ImageIcon("src/multimedia/imgs/Payasito.png");
+		ImageIcon pyasoImg = new ImageIcon("multimedia/imgs/Payasito.png");
 		Image pyasoImgIns = pyasoImg.getImage();
 		Image pyasoNewImg = pyasoImgIns.getScaledInstance(Payasolbl.getWidth(), Payasolbl.getHeight(),
 				Image.SCALE_SMOOTH);
@@ -248,7 +273,7 @@ public class Eleccion extends Ingreso {
 
 		JLabel Topezlbl = new JLabel("");
 		Topezlbl.setBounds(235, 195, 240, 240);
-		ImageIcon topezImg = new ImageIcon("src/multimedia/imgs/Topez.png");
+		ImageIcon topezImg = new ImageIcon("multimedia/imgs/Topez.png");
 		Image topezImgIns = topezImg.getImage();
 		Image topezNewImg = topezImgIns.getScaledInstance(Topezlbl.getWidth(), Topezlbl.getHeight(),
 				Image.SCALE_SMOOTH);
@@ -258,7 +283,7 @@ public class Eleccion extends Ingreso {
 
 		JLabel Polpolbl = new JLabel("");
 		Polpolbl.setBounds(634, 195, 240, 240);
-		ImageIcon polpoImg = new ImageIcon("src/multimedia/imgs/Polpo.png");
+		ImageIcon polpoImg = new ImageIcon("multimedia/imgs/Polpo.png");
 		Image polpoImgIns = polpoImg.getImage();
 		Image polpoNewImg = polpoImgIns.getScaledInstance(Polpolbl.getWidth(), Polpolbl.getHeight(),
 				Image.SCALE_SMOOTH);
@@ -290,7 +315,7 @@ public class Eleccion extends Ingreso {
 		// FONDO
 		JLabel Fondolbl = new JLabel("");
 		Fondolbl.setBounds(-10, -95, 1093, 751);
-		ImageIcon fondoImg = new ImageIcon("src/multimedia/imgs/Fondo.gif");
+		ImageIcon fondoImg = new ImageIcon("multimedia/imgs/Fondo.gif");
 		Image fondoImgIns = fondoImg.getImage();
 		Image fondoNewImg = fondoImgIns.getScaledInstance(Fondolbl.getWidth(), Fondolbl.getHeight(), Image.SCALE_FAST);
 		ImageIcon fondoFinalImage = new ImageIcon(fondoNewImg);

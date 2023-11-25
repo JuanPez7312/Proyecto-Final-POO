@@ -1,8 +1,12 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tareas {
+public class Tareas implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private int id;
 	private String titulo;
 	private String subtitulo;

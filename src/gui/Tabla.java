@@ -24,7 +24,7 @@ public class Tabla {
 
 	private JFrame frmTabla;
 	private JTable table;
-	Usuario us = new Usuario(); // Temporal, necesito que esta tabla extienda de la principal que tendra como
+	public Usuario us = new Usuario(); // Temporal, necesito que esta tabla extienda de la principal que tendra como
 								// atributo protegido el usuario que se esta manejando
 
 	public Tabla() {

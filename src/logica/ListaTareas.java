@@ -1,19 +1,14 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ListaTareas {
-	private int id;
+public class ListaTareas implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Tareas> tareas;
 	private String titulo;
 	
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public ArrayList<Tareas> getTareas() {
 		return tareas;
 	}

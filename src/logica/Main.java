@@ -2,7 +2,7 @@ package logica;
 
 import java.awt.EventQueue;
 
-import gui.Menu;
+import gui.Ingreso;
 
 public class Main {
 	/**
@@ -12,7 +12,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Menu frame = new Menu();
+					Ingreso frame = new Ingreso();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
