@@ -1,4 +1,3 @@
-
-module proyFinn {
+module PooFinal {
 	requires java.desktop;
 }
